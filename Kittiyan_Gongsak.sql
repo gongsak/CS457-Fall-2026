@@ -11,6 +11,7 @@ DROP DATABASE IF EXISTS Kittiyan_Gongsak;
 CREATE DATABASE Kittiyan_Gongsak;
 USE Kittiyan_Gongsak;
 
+
 /*
 DO NOT TOUCH THE COMMENTS.
 Just write your code in the specified sections.
@@ -20,40 +21,34 @@ Just write your code in the specified sections.
 
 -- YOUR CODE HERE
 CREATE TABLE located_in
-  (company_name VARCHAR(50) NOT NULL,
+  (company_name VARCHAR(50) NOT NULL CHECK (company_name <> ''),
   city VARCHAR(50) NOT NULL,
-  CONSTRAINT pk_located_in PRIMARY KEY (company_name),
-  CONSTRAINT chk_company_name CHECK (company_name <> '')
+  CONSTRAINT pk_located_in PRIMARY KEY (company_name)
 );
 
 CREATE TABLE lives
-  (person_id SMALLINT NOT NULL,
-  person_name VARCHAR(50) NOT NULL,
+  (person_id SMALLINT,
+  person_name VARCHAR(50) NOT NULL CHECK (person_name <> ''),
   street VARCHAR(50),
   city VARCHAR(50),
-  CONSTRAINT pk_lives PRIMARY KEY (person_id),
-  CONSTRAINT chk_person_name CHECK (person_name <> '')
+  CONSTRAINT pk_lives PRIMARY KEY (person_id)
 );
 
 CREATE TABLE works
-  (person_id SMALLINT NOT NULL,
+  (person_id SMALLINT REFERENCES lives(person_id),
   person_name VARCHAR(50) NOT NULL,
   company_id SMALLINT NOT NULL,
-  company_name VARCHAR(50) NOT NULL,
-  salary INT,
-  CONSTRAINT pk_works PRIMARY KEY (person_id),
-  CONSTRAINT fk_works_person FOREIGN KEY (person_id) REFERENCES lives(person_id),
-  CONSTRAINT fk_works_company FOREIGN KEY (company_name) REFERENCES located_in(company_name),
-  CONSTRAINT chk_salary CHECK (salary >= 0)
+  company_name VARCHAR(50) NOT NULL REFERENCES located_in(company_name),
+  salary INT CHECK (salary >= 0),
+  CONSTRAINT pk_works PRIMARY KEY (person_id)
 );
 
 CREATE TABLE manages
-  (person_name VARCHAR(50) NOT NULL,
+  (person_name VARCHAR(50),
   manager_name VARCHAR(50) NOT NULL,
   CONSTRAINT pk_manages PRIMARY KEY (person_name),
-  CONSTRAINT chk_not_self CHECK (person_name <> manager_name)
+  CHECK (person_name <> manager_name)
 );
-
 
 
 /*
