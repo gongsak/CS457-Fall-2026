@@ -23,7 +23,7 @@ Just write your code in the specified sections.
 -- YOUR CODE HERE
 SELECT lives.person_name, street, city
 FROM lives, works
-WHERE lives.person_id = works.person_id;
+WHERE lives.person_id = works.person_id
 AND company_name = 'ACME Corporation' AND salary > 50000;
 
 /*
